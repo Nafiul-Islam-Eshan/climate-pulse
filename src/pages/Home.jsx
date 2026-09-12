@@ -3,13 +3,18 @@ import LocationModal from "../components/LocationModal";
 
 const Home = () => {
   return (
-    <div className="flex flex-col items-center justify-center  bg-radial-[at_50%_50%] from-blue-200  to-transparent to-50%">
+    <div className="flex flex-col items-center justify-center text-center bg-radial-[at_50%_50%] from-blue-200  to-transparent to-50%">
       <h2 className="text-2xl text-center md:text-3xl lg:text-4xl text-cyan-950 font-bold md:font-extrabold">
         Climate <span className="text-blue-400 ">Pulse</span>
       </h2>
-      <p className="text-lg text-gray-900 my-3">
+      <div className=" my-5">
+        <p className="text-xl text-gray-800 w-full">
         Know the weather. Know What to carry.
       </p>
+      <p className="max-w-85 mt-2 text-sm font-light ">
+        Check the weather in your city and get a simple smart suggestion for your day ﹏ whether it is an umbrella, a water bottle, or warm cloths.
+      </p>
+      </div>
 
       {/* Button and Modal */}
       <div className="flex justify-center">
