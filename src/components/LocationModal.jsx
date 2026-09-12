@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaArrowRight } from "react-icons/fa";
 
 const LocationModal = () => {
   const [city, setCity] = useState("");
@@ -37,17 +38,17 @@ const LocationModal = () => {
               placeholder="Enter City Name"
               className="w-full border my-3 px-4 py-1 rounded-2xl"
             />
-            <button className="btn scale-90 text-lg bg-blue-500 shadow-none hover:shadow-lg hover:shadow-blue-400 transition-shadow duration-300 text-gray-200">
-              Get Weather
+            <button className="btn scale-90 text-lg bg-linear-to-r from-blue-400 to-blue-500 to-45% shadow-none hover:shadow-lg hover:shadow-blue-400 transition-shadow duration-150 text-gray-200  group">
+              Get Weather <span className="group-hover:translate-x-1.5 transition-traslate duration-150"><FaArrowRight /></span>
             </button>
 
             <div className="divider divide-neutral">OR</div>
 
             <button
               onClick={handleGeoLocation}
-              className="btn scale-90 text-lg bg-blue-500 shadow-none hover:shadow-lg hover:shadow-blue-400 transition-shadow duration-300 text-gray-200"
+              className="btn scale-90 text-lg bg-linear-to-r from-blue-400 to-blue-500 to-45% shadow-none hover:shadow-lg hover:shadow-blue-400 transition-shadow duration-150 text-gray-200  group"
             >
-              Use My Location
+              Use My Location <span className="group-hover:translate-x-1.5 transition-traslate duration-150"><FaArrowRight /></span>
             </button>
           </div>
 

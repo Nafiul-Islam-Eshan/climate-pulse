@@ -1,22 +1,23 @@
+import { FaArrowRight } from "react-icons/fa";
 import LocationModal from "../components/LocationModal";
 
 const Home = () => {
   return (
     <div className="flex flex-col items-center justify-center  bg-radial-[at_50%_50%] from-blue-200  to-transparent to-50%">
-      <h2 className="text-2xl text-center md:text-3xl lg:text-4xl text-blue-300 font-bold md:font-extrabold">
+      <h2 className="text-2xl text-center md:text-3xl lg:text-4xl text-cyan-950 font-bold md:font-extrabold">
         Climate <span className="text-blue-400 ">Pulse</span>
       </h2>
-      <p className="text-md text-gray-400 my-3">
-        Check weather today in Climate Pulse
+      <p className="text-lg text-gray-900 my-3">
+        Know the weather. Know What to carry.
       </p>
 
       {/* Button and Modal */}
       <div className="flex justify-center">
         <button
-          className="btn scale-90 text-lg bg-blue-500 shadow-none hover:shadow-lg hover:shadow-blue-400 transition-shadow duration-300 text-gray-200"
+          className="btn scale-90 text-lg bg-linear-to-r from-blue-400 to-blue-500 to-45% shadow-none hover:shadow-lg hover:shadow-blue-400 transition-shadow duration-150 text-gray-200  group"
           onClick={() => document.getElementById("my_modal_3").showModal()}
         >
-          Check Weather
+          Check Weather <span className="group-hover:translate-x-1.5 transition-traslate duration-150"><FaArrowRight /></span>
         </button>
         {/* Modal */}
         <LocationModal />
