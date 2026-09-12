@@ -3,8 +3,23 @@ import { useState } from "react";
 const LocationModal = () => {
   const [city, setCity] = useState("");
 
+  const handleGeoLocation = async () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const {latitude, longitude} = position.coords
+        console.log({latitude, longitude});
+      },
+      (error) => {
+        const {message} = error
+        console.log({message});
+      },
+      {
+        timeout: 3000
+      }
+    );
+  };
+
   const handleSubmit = () => {
-    // e.prevenDefault();
     console.log("Form submited", city);
   };
 
@@ -14,7 +29,7 @@ const LocationModal = () => {
         <h2 className="text-xl font-bold text-gray-800">
           What is your location?
         </h2>
-        <form onSubmit={handleSubmit} method="dialog">
+        <form onSubmit={()=>handleSubmit()} method="dialog">
           <div className="flex flex-col justify-center items-center w-full mt-5">
             <input
               onChange={(e) => setCity(e.target.value)}
@@ -28,8 +43,10 @@ const LocationModal = () => {
 
             <div className="divider divide-neutral">OR</div>
 
-            
-            <button className="btn scale-90 text-lg bg-blue-500 shadow-none hover:shadow-lg hover:shadow-blue-400 transition-shadow duration-300 text-gray-200">
+            <button
+              onClick={handleGeoLocation}
+              className="btn scale-90 text-lg bg-blue-500 shadow-none hover:shadow-lg hover:shadow-blue-400 transition-shadow duration-300 text-gray-200"
+            >
               Use My Location
             </button>
           </div>
