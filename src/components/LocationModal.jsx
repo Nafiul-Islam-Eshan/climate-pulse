@@ -1,20 +1,31 @@
 import { useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { getGeoLocaton } from "../services/getGeoLocation";
+import { useNavigate } from "react-router";
 
 const LocationModal = () => {
+  const nagivate = useNavigate();
   const [city, setCity] = useState("");
-  const [location, setLocation] = useState([]);
-  const [error, setError] = useState('')
+  const [error, setError] = useState("");
+
+  const handleGotoWeather = (location) => {
+    nagivate("weather", {
+      state: {
+        location,
+        error,
+      },
+    });
+  };
 
   const handleGeoLocation = async () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const { latitude, longitude } = position.coords;
-        setLocation({ latitude, longitude });
+        const location = position.coords;
+        handleGotoWeather(location);
       },
       (error) => {
         setError(error);
+        handleGotoWeather(error);
       },
       {
         timeout: 3000,
@@ -25,19 +36,17 @@ const LocationModal = () => {
   const handleSubmit = async () => {
     const value = city.trim();
 
-    try{
-      const data = await getGeoLocaton(value)
-      if(!data){
-        throw new Error("Something went wrong. Please try again later.")
+    try {
+      const location = await getGeoLocaton(value);
+      if (!location) {
+        throw new Error("Something went wrong. Please try again later.");
       }
-      setLocation(data);      
-    }
-    catch(error){
+      handleGotoWeather(location);
+    } catch (error) {
       setError(error);
+      handleGotoWeather(error);
     }
   };
-
-  console.log({location, error});
 
   return (
     <dialog id="my_modal_3" className="modal">
