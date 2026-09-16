@@ -9,23 +9,28 @@ const LocationModal = () => {
   const [error, setError] = useState("");
 
   const handleGotoWeather = (location) => {
-    nagivate("weather", {
+    nagivate("/weather", {
       state: {
         location,
-        error,
       },
     });
   };
 
-  const handleGeoLocation = async () => {
+  const handleGeoLocation = () => {
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const location = position.coords;
-        handleGotoWeather(location);
+        const { latitude, longitude } = position.coords;
+        handleGotoWeather({ name: "Your Location", latitude, longitude });
+        setError('')
       },
       (error) => {
-        setError(error);
-        handleGotoWeather(error);
+        if (error.code === error.PERMISSION_DENIED) {
+          setError("User Denied Geo Location.");
+        } else {
+          setError(error.message);
+        }
+        // console.log(error);
       },
       {
         timeout: 3000,
@@ -33,18 +38,28 @@ const LocationModal = () => {
     );
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const value = city.trim();
+
+    if (!value) {
+      setError("Please Enter City Name.");
+      return;
+    }
+    setError("");
 
     try {
       const location = await getGeoLocaton(value);
       if (!location) {
-        throw new Error("Something went wrong. Please try again later.");
+        setError("Geocoding Request Failed 🥲.")
+        return;
       }
+      setError("");
+
       handleGotoWeather(location);
+
     } catch (error) {
       setError(error);
-      handleGotoWeather(error);
     }
   };
 
@@ -54,15 +69,22 @@ const LocationModal = () => {
         <h2 className="text-xl font-bold text-gray-800">
           What is your location?
         </h2>
-        <form onSubmit={() => handleSubmit()} method="dialog">
+        <form onSubmit={(e) => handleSubmit(e)} method="dialog">
           <div className="flex flex-col justify-center items-center w-full mt-5">
             <input
               onChange={(e) => setCity(e.target.value)}
               type="text"
               placeholder="Enter City Name"
-              className="w-full border my-3 px-4 py-1 rounded-2xl"
+              className="w-full border mt-3 px-4 py-1 rounded-2xl"
             />
-            <button className="btn scale-90 text-lg bg-linear-to-r from-blue-400 to-blue-500 to-45% shadow-none hover:shadow-lg hover:shadow-blue-400 transition-shadow duration-150 text-gray-200  group">
+            <div className="">
+              {error && (
+                <p className="text-rose-500 font-light text-lg">
+                  {error}
+                </p>
+              )}
+            </div>
+            <button className="btn mt-3  scale-90 text-lg bg-linear-to-r from-blue-400 to-blue-500 to-45% shadow-none hover:shadow-lg hover:shadow-blue-400 transition-shadow duration-150 text-gray-200  group">
               Get Weather{" "}
               <span className="group-hover:translate-x-1.5 transition-traslate duration-150">
                 <FaArrowRight />
@@ -72,6 +94,7 @@ const LocationModal = () => {
             <div className="divider divide-neutral">OR</div>
 
             <button
+              type="button"
               onClick={handleGeoLocation}
               className="btn scale-90 text-lg bg-linear-to-r from-blue-400 to-blue-500 to-45% shadow-none hover:shadow-lg hover:shadow-blue-400 transition-shadow duration-150 text-gray-200  group"
             >
